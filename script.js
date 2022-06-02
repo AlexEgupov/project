@@ -5,10 +5,6 @@ let screens;
 let screenPrice;
 let service1;
 let service2;
-let allServicePrices;
-let fullPrice;
-let rollback;
-let servicePercentPrice;
 let adaptive;
 
 const isNumber = function (num) {
@@ -86,11 +82,11 @@ function getServicePercentPrices(fullPrice, rollback) {
 };
 
 asking();
-allServicePrices = getAllServicePrices();
-fullPrice = getFullPrice(+screenPrice.trim(), allServicePrices);
-rollback = fullPrice * (15 / 100);
+const allServicePrices = getAllServicePrices();
+const fullPrice = getFullPrice(+screenPrice.trim(), allServicePrices);
+const rollback = fullPrice * (15 / 100);
+const servicePercentPrice = Math.ceil(getServicePercentPrices(fullPrice, rollback));
 title = getTitle(title);
-servicePercentPrice = Math.ceil(getServicePercentPrices(fullPrice, rollback));
 
 showTypeOf(title);
 showTypeOf(fullPrice);
