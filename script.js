@@ -62,9 +62,6 @@ const appData = {
     appPrices: function () {
 
         appData.screenPrice = appData.screens.map(item => item.price).reduce((prev, curr) => prev + +curr, 0);
-        // for (let screen of appData.screens) {
-        //     appData.screenPrice += +screen.price;
-        // }
 
         for (let service of appData.services) {
             appData.allServicePrices += service.price;
