@@ -25,7 +25,7 @@ const appData = {
     isString: function (str, question) {
         do {
             str = prompt(question);
-        } while (appData.isNumber(name));
+        } while (appData.isNumber(str));
 
         return str;
     },
@@ -60,9 +60,11 @@ const appData = {
         appData.adaptive = confirm('Нужен ли адаптив на сайте?');
     },
     appPrices: function () {
-        for (let screen of appData.screens) {
-            appData.screenPrice += +screen.price;
-        }
+
+        appData.screenPrice = appData.screens.map(item => item.price).reduce((prev, curr) => prev + +curr, 0);
+        // for (let screen of appData.screens) {
+        //     appData.screenPrice += +screen.price;
+        // }
 
         for (let service of appData.services) {
             appData.allServicePrices += service.price;
@@ -92,9 +94,6 @@ const appData = {
         for (let key in appData) {
             console.log(key);
         }
-        console.log(appData.screens);
-        console.log(appData.services);
-        console.log(appData.title);
         console.log(appData.fullPrice);
         console.log(appData.servicePercentPrice);
     }
