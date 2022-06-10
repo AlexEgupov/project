@@ -29,14 +29,21 @@ const appData = {
     rollback: 0.1,
     servicePercentPrice: 0,
     adaptive: true,
-    start: function () {
-        appData.asking();
-        appData.appPrices();
-        appData.getFullPrice();
-        appData.getServicePercentPrices();
-        appData.getTitle();
+    init: function () {
+        appData.addTitle();
+        appData.start();
+    },
+    addTitle: function () {
 
-        appData.logger();
+    },
+    start: function () {
+        // appData.asking();
+        // appData.appPrices();
+        // appData.getFullPrice();
+        // appData.getServicePercentPrices();
+        // appData.getTitle();
+
+        // appData.logger();
     },
     isNumber: function (num) {
         return !isNaN(parseFloat(num)) && isFinite(num);
@@ -116,4 +123,4 @@ const appData = {
 
 };
 
-appData.start();
+appData.init();
