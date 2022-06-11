@@ -18,6 +18,7 @@ const fullTotalCount = document.getElementsByClassName('total-input')[3];
 const totalCountRollback = document.getElementsByClassName('total-input')[4];
 
 let screens = document.querySelectorAll('.screen');
+let interval;
 
 const appData = {
     title: '',
@@ -74,6 +75,8 @@ const appData = {
         rangeInput.addEventListener('input', () => {
             rangeValue.textContent = rangeInput.value + '%';
             appData.rollback = rangeInput.value;
+            appData.servicePercentPrice = Math.ceil(appData.fullPrice - (appData.fullPrice * (appData.rollback / 100)));
+            appData.showResult();
         });
     },
     showResult: function () {
@@ -128,9 +131,9 @@ const appData = {
     },
     addPrices: function () {
 
-        appData.screenPrice = appData.screens.map(item => item.price).reduce((prev, curr) => prev + +curr, 0);
+        appData.screenPrice = appData.screens.map(item => item.price).reduce((prev, curr) => prev + curr, 0);
 
-        appData.screensCount = appData.screens.map(item => item.count).reduce((prev, curr) => prev + +curr, 0);
+        appData.screensCount = appData.screens.map(item => item.count).reduce((prev, curr) => prev + curr);
 
         for (let key in appData.servicesNumber) {
             appData.servicePricesNumber += appData.servicesNumber[key];
