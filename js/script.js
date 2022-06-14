@@ -6,6 +6,13 @@ const otherItemsPer = document.querySelectorAll('.percent');
 const otherItemsNum = document.querySelectorAll('.number');
 const checkBox = document.querySelectorAll('.custom-checkbox');
 
+const cmsOpen = document.getElementById('cms-open');
+const cmsVariants = document.querySelector('.hidden-cms-variants');
+const cmsSelect = cmsVariants.querySelector('select');
+const cmsOptions = cmsSelect.querySelectorAll('option');
+const cmsHiddenInput = cmsVariants.querySelector('.main-controls__input');
+const cmsInput = cmsHiddenInput.querySelector('input');
+
 const rangeInput = document.querySelector('.rollback input');
 const rangeValue = document.querySelector('.rollback .range-value');
 
@@ -21,7 +28,6 @@ const totalCountRollback = document.getElementsByClassName('total-input')[4];
 let selectItems = document.querySelectorAll('select');
 let screensInput = document.querySelectorAll('.screen input[type="text"]');
 let screens = document.querySelectorAll('.screen');
-let interval;
 
 const appData = {
     title: '',
@@ -35,6 +41,8 @@ const appData = {
     fullPrice: 0,
     rollback: 0,
     servicePercentPrice: 0,
+    cmsPercentPrice: 0,
+    cmsRollback: 0,
     adaptive: true,
     isError: false,
     init: function () {
@@ -47,6 +55,16 @@ const appData = {
         });
         resetBtn.addEventListener('click', () => {
             this.reset();
+        });
+        cmsOpen.addEventListener('click', () => {
+            if (cmsOpen.checked) {
+                cmsVariants.style.display = 'flex';
+            } else {
+                cmsVariants.style.display = 'none';
+            }
+        });
+        cmsSelect.addEventListener('change', () => {
+            this.cmsOptions();
         });
         plusButton.addEventListener('click', this.addScreenBlock);
     },
@@ -76,7 +94,7 @@ const appData = {
         this.addPrices();
         // this.getServicePercentPrices();
 
-        // this.logger();
+        this.logger();
         this.showResult();
     },
     disable: function () {
@@ -86,6 +104,7 @@ const appData = {
         this.lockToggle(checkBox);
         this.lockToggle(selectItems);
         this.lockToggle(screensInput);
+        cmsInput.disabled = true;
 
         plusButton.style.display = 'none';
         startBtn.style.display = 'none';
@@ -117,6 +136,8 @@ const appData = {
         plusButton.style.display = 'inline-block';
         startBtn.style.display = 'inline-block';
         resetBtn.style.display = 'none';
+        cmsVariants.style.display = 'none';
+        cmsInput.disabled = false;
         screensInput[0].value = '';
         selectItems[0].value = '';
 
@@ -136,7 +157,21 @@ const appData = {
         this.fullPrice = 0;
         this.rollback = 0;
         this.servicePercentPrice = 0;
+        this.servicePercentPrice = 0;
+        this.cmsPercentPrice = 0;
+        this.cmsRollback = 0;
         this.showResult();
+        console.log(appData);
+    },
+    cmsOptions: function () {
+        cmsOptions.forEach((element) => {
+            if (element.value == 'other') {
+                cmsHiddenInput.style.display = 'inline-block';
+            }
+        });
+        cmsInput.addEventListener('input', () => {
+            this.cmsRollback = cmsInput.value;
+        });
     },
     rollbackInput: function () {
         rangeInput.addEventListener('input', () => {
@@ -213,12 +248,16 @@ const appData = {
 
         this.fullPrice = this.screenPrice + this.servicePricesNumber + this.servicePricesPercent;
 
+        this.cmsPercentPrice = Math.ceil(this.fullPrice + (this.fullPrice * (this.cmsRollback / 100)));
+
         this.servicePercentPrice = Math.ceil(this.fullPrice - (this.fullPrice * (this.rollback / 100)));
     },
     logger: function () {
-        for (let key in this) {
-            console.log(key);
-        }
+        // for (let key in this) {
+        //     console.log(key);
+        // }
+        console.log(`С CMS выходит ${this.cmsPercentPrice} рублей`);
+        console.log(appData);
         console.log(this.fullPrice);
         console.log(this.servicePercentPrice);
     }
